@@ -1,1 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa Nossa Mãe – Centro de Apoio ao Autismo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" href="img/logotipe.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul: #1a4b8c; --azul-claro: #2d6cc4; --verde: #3aaa7e;
+      --amarelo: #f5c842; --laranja: #f07c33; --rosa: #f06292;
+      --bg: #f7f4ef; --bg2: #ffffff; --texto: #1a1a2e; --texto-suave: #555577;
+      --borda: #e0d9f0; --sombra: 0 4px 24px rgba(26,75,140,0.10);
+      --radius: 18px; --radius-sm: 10px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);overflow-x:hidden}
+
+    /* ── NAVBAR ── */
+    #navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.92);backdrop-filter:blur(14px);border-bottom:1.5px solid var(--borda);display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:68px;box-shadow:0 2px 16px rgba(26,75,140,0.07);transition:background .3s}
+    .nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer}
+    .nav-logo-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .nav-logo-icon img{width:50px;object-fit:cover}
+    .nav-logo-text{font-family:'Playfair Display',serif;font-weight:700;font-size:1.15rem;color:var(--azul);line-height:1.2}
+    .nav-logo-sub{font-size:.7rem;color:var(--texto-suave);font-weight:400}
+    .nav-links{display:flex;gap:6px;align-items:center}
+    .nav-links a{padding:7px 14px;border-radius:8px;text-decoration:none;font-size:.88rem;font-weight:500;color:var(--texto);transition:background .2s,color .2s}
+    .nav-links a:hover{background:var(--azul);color:#fff}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .btn-notif{position:relative;width:38px;height:38px;border-radius:50%;background:var(--bg);border:1.5px solid var(--borda);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:background .2s}
+    .btn-notif:hover{background:var(--azul);color:#fff}
+    .notif-badge{position:absolute;top:4px;right:4px;width:10px;height:10px;border-radius:50%;background:var(--laranja);border:2px solid #fff;animation:pulse-badge 1.5s infinite}
+    @keyframes pulse-badge{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+    .hamburger span{width:24px;height:2.5px;background:var(--azul);border-radius:2px;transition:.3s}
+
+    /* ── HERO ── */
+    #hero{min-height:100vh;padding-top:68px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0;background:linear-gradient(135deg,#e8f0fc 0%,#f7f4ef 60%,#e8f7f0 100%);position:relative;overflow:hidden}
+    .hero-blobs{position:absolute;inset:0;pointer-events:none}
+    .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;animation:float 8s ease-in-out infinite}
+    .blob1{width:480px;height:480px;background:var(--azul-claro);top:-120px;right:-80px}
+    .blob2{width:320px;height:320px;background:var(--verde);bottom:-60px;left:10%;animation-delay:-3s}
+    .blob3{width:200px;height:200px;background:var(--amarelo);top:40%;left:40%;animation-delay:-5s}
+    @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.05)}}
+    .hero-content{padding:80px 60px 60px 80px;position:relative;z-index:2}
+    .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(26,75,140,.1);color:var(--azul);padding:6px 16px;border-radius:100px;font-size:.82rem;font-weight:600;margin-bottom:24px;border:1px solid rgba(26,75,140,.2)}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:900;line-height:1.1;color:var(--azul);margin-bottom:20px}
+    h1 span{color:var(--verde)}
+    .hero-desc{font-size:1.05rem;color:var(--texto-suave);max-width:480px;line-height:1.7;margin-bottom:36px}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+    .btn-primary{padding:14px 28px;border-radius:var(--radius-sm);background:var(--azul);color:#fff;font-size:.95rem;font-weight:600;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;box-shadow:0 4px 18px rgba(26,75,140,.25)}
+    .btn-primary:hover{transform:translateY(-2px);background:var(--azul-claro);box-shadow:0 8px 28px rgba(26,75,140,.35)}
+    .btn-secondary{padding:14px 28px;border-radius:var(--radius-sm);background:transparent;color:var(--azul);font-size:.95rem;font-weight:600;border:2px solid var(--azul);cursor:pointer;transition:all .2s}
+    .btn-secondary:hover{background:var(--azul);color:#fff}
+    .hero-stats{display:flex;gap:32px;margin-top:44px}
+    .stat{text-align:center}
+    .stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--azul)}
+    .stat-label{font-size:.78rem;color:var(--texto-suave);font-weight:500}
+    .hero-visual{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:60px 60px 60px 20px}
+    .hero-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:440px}
+    .hcard{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--sombra);border:1.5px solid var(--borda);animation:hcard-in .8s both;transition:transform .3s;height:200px}
+    .hcard:hover{transform:translateY(-4px)}
+    .hcard:nth-child(1){animation-delay:.1s}
+    .hcard:nth-child(2){animation-delay:.2s;margin-top:28px}
+    .hcard:nth-child(3){animation-delay:.3s;margin-top:-28px}
+    .hcard:nth-child(4){animation-delay:.4s}
+    @keyframes hcard-in{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .hcard-icon{font-size:2.2rem;margin-bottom:12px}
+    .hcard-title{font-weight:700;font-size:.95rem;color:var(--azul);margin-bottom:4px}
+    .hcard-desc{font-size:.8rem;color:var(--texto-suave)}
+
+    /* ── SEÇÕES ── */
+    section{padding:80px 40px}
+    .section-inner{max-width:1160px;margin:0 auto}
+    .section-tag{display:inline-block;padding:4px 14px;border-radius:100px;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+    .tag-azul{background:rgba(26,75,140,.1);color:var(--azul)}
+    .tag-verde{background:rgba(58,170,126,.12);color:var(--verde)}
+    .tag-laranja{background:rgba(240,124,51,.12);color:var(--laranja)}
+    .tag-rosa{background:rgba(240,98,146,.12);color:var(--rosa)}
+    h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:800;color:var(--azul);line-height:1.2;margin-bottom:12px}
+    .section-desc{font-size:1rem;color:var(--texto-suave);max-width:560px;line-height:1.7;margin-bottom:48px}
+    .card{background:#fff;border-radius:var(--radius);padding:28px;box-shadow:var(--sombra);border:1.5px solid var(--borda);transition:transform .3s,box-shadow .3s}
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(26,75,140,.15)}
+
+    /* ── DESTAQUES ── */
+    #destaques{background:#fff}
+    .news-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:20px}
+    .news-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--sombra);border:1.5px solid var(--borda);background:#fff;transition:transform .3s;cursor:pointer}
+    .news-card:hover{transform:translateY(-5px)}
+    .news-img{width:100%;height:200px;object-fit:cover;background:linear-gradient(135deg,var(--azul) 0%,var(--verde) 100%);display:flex;align-items:center;justify-content:center;font-size:4rem}
+    .news-card.featured .news-img{height:280px}
+    .news-body{padding:20px}
+    .news-cat{display:inline-block;padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:rgba(26,75,140,.08);color:var(--azul);margin-bottom:10px}
+    .news-title{font-weight:700;font-size:1rem;color:var(--texto);margin-bottom:6px;line-height:1.4}
+    .news-card.featured .news-title{font-size:1.2rem}
+    .news-date{font-size:.78rem;color:var(--texto-suave)}
+
+    /* ── EVENTOS ── */
+    #eventos{background:var(--bg)}
+    .eventos-layout{display:grid;grid-template-columns:1fr 360px;gap:32px}
+    .eventos-list{display:flex;flex-direction:column;gap:16px}
+    .evento-card{background:#fff;border-radius:var(--radius);padding:20px 24px;display:flex;gap:20px;align-items:center;box-shadow:var(--sombra);border:1.5px solid var(--borda);transition:transform .2s,border-color .2s;cursor:pointer}
+    .evento-card:hover{transform:translateX(6px);border-color:var(--azul-claro)}
+    .evento-date-box{min-width:58px;height:62px;border-radius:12px;background:linear-gradient(135deg,var(--azul),var(--azul-claro));display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+    .evento-day{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;line-height:1}
+    .evento-month{font-size:.7rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+    .evento-info{flex:1}
+    .evento-titulo{font-weight:700;font-size:.97rem;margin-bottom:4px;color:var(--texto)}
+    .evento-meta{font-size:.82rem;color:var(--texto-suave);display:flex;gap:14px;flex-wrap:wrap}
+    .evento-meta span{display:flex;align-items:center;gap:4px}
+    .evento-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(58,170,126,.12);color:var(--verde);white-space:nowrap}
+    .evento-badge.urgente{background:rgba(240,124,51,.12);color:var(--laranja)}
+    .calendario-mini{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--sombra);border:1.5px solid var(--borda);height:fit-content;position:sticky;top:88px}
+    .cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .cal-title{font-weight:700;font-size:1rem;color:var(--azul)}
+    .cal-nav{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--texto-suave);padding:4px}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+    .cal-day-name{font-size:.7rem;font-weight:700;text-align:center;color:var(--texto-suave);padding:4px 0}
+    .cal-day{font-size:.82rem;text-align:center;padding:6px 4px;border-radius:8px;cursor:pointer;transition:background .2s;position:relative}
+    .cal-day:hover{background:rgba(26,75,140,.08)}
+    .cal-day.today{background:var(--azul);color:#fff;font-weight:700}
+    .cal-day.has-event::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--laranja)}
+    .cal-day.other-month{color:#ccc}
+
+    /* ── CHATBOT ── */
+    #chatbot-fab{position:fixed;bottom:28px;right:28px;z-index:999;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--azul),var(--verde));box-shadow:0 4px 24px rgba(26,75,140,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:26px;transition:transform .2s;border:none;color:#fff;animation:fab-bounce 2s ease-in-out infinite}
+    @keyframes fab-bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+    #chatbot-fab:hover{transform:scale(1.12)!important;animation:none}
+    .chatbot-tooltip{position:fixed;bottom:98px;right:28px;z-index:998;background:var(--azul);color:#fff;padding:8px 16px;border-radius:10px;font-size:.85rem;font-weight:500;white-space:nowrap;box-shadow:0 4px 16px rgba(26,75,140,.25);animation:tooltip-in .4s both 2s;pointer-events:none}
+    .chatbot-tooltip::after{content:'';position:absolute;bottom:-7px;right:20px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid var(--azul)}
+    @keyframes tooltip-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    #chatbot-window{position:fixed;bottom:100px;right:28px;z-index:998;width:380px;max-height:560px;border-radius:20px;background:#fff;box-shadow:0 8px 48px rgba(26,75,140,.22);border:1.5px solid var(--borda);display:none;flex-direction:column;overflow:hidden;animation:chat-in .3s both}
+    @keyframes chat-in{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+    #chatbot-window.open{display:flex}
+    .chat-header{background:linear-gradient(135deg,var(--azul),var(--azul-claro));padding:16px 20px;display:flex;align-items:center;gap:12px}
+    .chat-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px}
+    .chat-header-info{flex:1}
+    .chat-name{font-weight:700;color:#fff;font-size:.95rem}
+    .chat-status{font-size:.75rem;color:rgba(255,255,255,.75);display:flex;align-items:center;gap:5px}
+    .chat-status::before{content:'';width:7px;height:7px;border-radius:50%;background:#5ff;display:inline-block}
+    .chat-close{background:none;border:none;color:rgba(255,255,255,.8);font-size:20px;cursor:pointer;padding:4px}
+    .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:340px}
+    .msg{max-width:80%;animation:msg-in .25s both}
+    @keyframes msg-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .msg.bot{align-self:flex-start}
+    .msg.user{align-self:flex-end}
+    .msg-bubble{padding:10px 14px;border-radius:14px;font-size:.88rem;line-height:1.5}
+    .msg.bot .msg-bubble{background:var(--bg);color:var(--texto);border-bottom-left-radius:4px}
+    .msg.user .msg-bubble{background:var(--azul);color:#fff;border-bottom-right-radius:4px}
+    .msg-time{font-size:.7rem;color:var(--texto-suave);margin-top:4px;padding:0 4px}
+    .msg.user .msg-time{text-align:right}
+    .chat-quick-btns{padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px}
+    .quick-btn{padding:6px 12px;border-radius:100px;background:rgba(26,75,140,.08);color:var(--azul);font-size:.78rem;font-weight:600;border:1px solid rgba(26,75,140,.15);cursor:pointer;transition:all .2s;white-space:nowrap}
+    .quick-btn:hover{background:var(--azul);color:#fff}
+    .chat-input-area{padding:12px 16px;border-top:1px solid var(--borda);display:flex;gap:8px}
+    .chat-input{flex:1;padding:10px 14px;border-radius:100px;border:1.5px solid var(--borda);font-size:.88rem;font-family:inherit;outline:none;transition:border-color .2s;background:var(--bg)}
+    .chat-input:focus{border-color:var(--azul-claro)}
+    .chat-send{width:40px;height:40px;border-radius:50%;background:var(--azul);border:none;color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .chat-send:hover{background:var(--azul-claro)}
+    .typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
+    .typing span{width:7px;height:7px;border-radius:50%;background:var(--texto-suave);animation:typing 1.2s infinite}
+    .typing span:nth-child(2){animation-delay:.2s}
+    .typing span:nth-child(3){animation-delay:.4s}
+    @keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+    /* ── SOBRE ── */
+    #sobre{background:#fff}
+    .sobre-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+    .sobre-visual{background:linear-gradient(135deg,#e8f0fc,#e8f7f0);border-radius:var(--radius);height:400px;display:flex;align-items:center;justify-content:center;font-size:6rem;position:relative;overflow:hidden}
+    .sobre-visual-decoration{position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(26,75,140,.08) 0%,transparent 60%)}
+    .docs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+    .doc-card{background:var(--bg);border-radius:var(--radius-sm);padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1.5px solid var(--borda);transition:all .2s}
+    .doc-card:hover{background:rgba(26,75,140,.05);border-color:var(--azul-claro)}
+    .doc-icon{font-size:1.6rem}
+    .doc-label{font-size:.85rem;font-weight:600;color:var(--azul)}
+    .doc-sub{font-size:.75rem;color:var(--texto-suave)}
+
+    /* ── VOLUNTÁRIOS ── */
+    #voluntarios{background:var(--bg)}
+    .vol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .vol-card{background:#fff;border-radius:var(--radius);padding:28px;text-align:center;box-shadow:var(--sombra);border:1.5px solid var(--borda);transition:transform .3s}
+    .vol-card:hover{transform:translateY(-6px)}
+    .vol-icon{font-size:3rem;margin-bottom:16px}
+    .vol-title{font-weight:700;font-size:1rem;color:var(--azul);margin-bottom:8px}
+    .vol-desc{font-size:.85rem;color:var(--texto-suave);line-height:1.6;margin-bottom:18px}
+    .vol-form{display:flex;flex-direction:column;gap:12px;margin-top:40px;max-width:600px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-field{display:flex;flex-direction:column;gap:5px}
+    .form-label{font-size:.82rem;font-weight:600;color:var(--texto)}
+    .form-input,.form-select,.form-textarea{padding:10px 14px;border-radius:10px;border:1.5px solid var(--borda);font-family:inherit;font-size:.9rem;background:var(--bg);transition:border-color .2s;outline:none}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--azul-claro)}
+    .form-textarea{resize:vertical;min-height:90px}
+
+    /* ── NOTIFICAÇÕES ── */
+    #notif-dropdown{position:fixed;top:78px;right:20px;z-index:1100;background:#fff;border-radius:var(--radius);padding:0;width:340px;box-shadow:0 8px 40px rgba(26,75,140,.18);border:1.5px solid var(--borda);display:none;overflow:hidden;animation:notif-in .25s both}
+    @keyframes notif-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+    #notif-dropdown.open{display:block}
+    .notif-header{padding:14px 18px;background:var(--azul);color:#fff;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center}
+    .notif-mark{font-size:.75rem;font-weight:500;cursor:pointer;opacity:.8}
+    .notif-item{padding:14px 18px;border-bottom:1px solid var(--borda);cursor:pointer;transition:background .15s;display:flex;gap:12px;align-items:flex-start}
+    .notif-item:hover{background:var(--bg)}
+    .notif-item.unread{background:rgba(26,75,140,.03)}
+    .notif-dot{width:10px;height:10px;border-radius:50%;background:var(--laranja);flex-shrink:0;margin-top:5px}
+    .notif-dot.read{background:transparent;border:1.5px solid var(--borda)}
+    .notif-text{font-size:.83rem;color:var(--texto);line-height:1.5}
+    .notif-date{font-size:.72rem;color:var(--texto-suave);margin-top:3px}
+
+    /* ── FOOTER ── */
+    footer{background:var(--azul);color:rgba(255,255,255,.85);padding:60px 40px 30px}
+    .footer-inner{max-width:1160px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+    .footer-brand-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:10px}
+    .footer-about{font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.7)}
+    .footer-col-title{font-weight:700;font-size:.88rem;color:#fff;margin-bottom:16px;text-transform:uppercase;letter-spacing:.05em}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .footer-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.85rem;transition:color .2s}
+    .footer-links a:hover{color:#fff}
+    .footer-contact{font-size:.85rem;color:rgba(255,255,255,.7);line-height:2}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.15);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:rgba(255,255,255,.5)}
+
+    /* ── MODAL ── */
+    .modal-overlay{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+    .modal-overlay.open{display:flex}
+    .modal-box{background:#fff;border-radius:var(--radius);max-width:500px;width:100%;padding:32px;box-shadow:0 16px 64px rgba(0,0,0,.2);animation:modal-in .3s both}
+    @keyframes modal-in{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .modal-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;color:var(--azul)}
+    .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--texto-suave)}
+    .success-msg{text-align:center;padding:20px;animation:success-in .4s both}
+    @keyframes success-in{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+    .success-icon{font-size:4rem;margin-bottom:12px}
+    .success-text{font-weight:700;font-size:1.1rem;color:var(--verde);margin-bottom:8px}
+    .success-sub{font-size:.88rem;color:var(--texto-suave)}
+
+    /* ── TOAST ── */
+    #toast-container{position:fixed;top:88px;left:50%;transform:translateX(-50%);z-index:4000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+    .toast{background:var(--azul);color:#fff;padding:12px 22px;border-radius:12px;font-size:.88rem;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);animation:toast-in .3s both;pointer-events:auto}
+    @keyframes toast-in{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ── RESPONSIVIDADE ── */
+    @media(max-width:1024px){.news-grid{grid-template-columns:1fr 1fr}.news-grid .news-card.featured{grid-column:span 2}.eventos-layout{grid-template-columns:1fr}.calendario-mini{position:static}.footer-grid{grid-template-columns:1fr 1fr}.sobre-grid{grid-template-columns:1fr}.sobre-visual{height:260px}}
+    @media(max-width:768px){#hero{grid-template-columns:1fr;min-height:auto;padding-top:68px}.hero-content{padding:48px 24px 24px}.hero-visual{display:none}.hero-stats{gap:20px}.nav-links{display:none}.hamburger{display:flex}section{padding:56px 20px}.news-grid{grid-template-columns:1fr}.news-grid .news-card.featured{grid-column:span 1}.vol-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.docs-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr;gap:24px}.footer-bottom{flex-direction:column;gap:8px;text-align:center}#chatbot-window{right:12px;left:12px;width:auto;bottom:90px}#notif-dropdown{right:12px;left:12px;width:auto}}
+    @media(max-width:480px){.hero-btns{flex-direction:column}.hero-stats{flex-wrap:wrap}.modal-box{padding:22px 16px}}
+
+    /* ── MOBILE NAV ── */
+    #mobile-nav{position:fixed;inset:0;z-index:999;background:rgba(255,255,255,.98);display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+    #mobile-nav.open{display:flex}
+    #mobile-nav a{font-size:1.3rem;font-weight:700;color:var(--azul);text-decoration:none;padding:12px 32px;border-radius:12px;transition:background .2s}
+    #mobile-nav a:hover{background:rgba(26,75,140,.07)}
+    .mobile-nav-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:28px;cursor:pointer;color:var(--texto)}
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    ::-webkit-scrollbar{width:7px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--borda);border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--azul-claro)}
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="scrollToSection('hero')">
+    <div class="nav-logo-icon"><img src="img/logotipe.jpg" alt="logo"></div>
+    <div>
+      <div class="nav-logo-text">Casa Nossa Mãe</div>
+      <div class="nav-logo-sub">Centro de Apoio ao Autismo</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#destaques">Novidades</a>
+    <a href="#eventos">Eventos</a>
+    <a href="#voluntarios">Voluntários</a>
+    <a href="#sobre">Sobre Nós</a>
+    <a href="#contato">Contato</a>
+  </div>
+  <div class="nav-actions">
+    <div class="btn-notif" onclick="toggleNotif()" title="Notificações">
+      🔔 <div class="notif-badge" id="notif-badge" style="display:none"></div>
+    </div>
+    <!-- Botão ADM removido do site público. Acesse: admin.html -->
+    <div class="hamburger" onclick="openMobileNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div id="mobile-nav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <a href="#destaques" onclick="closeMobileNav()">Novidades</a>
+  <a href="#eventos" onclick="closeMobileNav()">Eventos</a>
+  <a href="#voluntarios" onclick="closeMobileNav()">Voluntários</a>
+  <a href="#sobre" onclick="closeMobileNav()">Sobre Nós</a>
+  <a href="#contato" onclick="closeMobileNav()">Contato</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blobs">
+    <div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag">Centro de Apoio ao Autismo</div>
+    <h1>Juntos por um <span>futuro inclusivo</span></h1>
+    <p class="hero-desc">A Casa Nossa Mãe acolhe, apoia e transforma vidas. Somos um espaço de amor, informação e esperança para famílias e pessoas com autismo.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollToSection('voluntarios')">🤝 Seja Voluntário</button>
+      <button class="btn-secondary" onclick="scrollToSection('sobre')">Conheça a Casa</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num" id="stat-familias">280+</div><div class="stat-label">Famílias atendidas</div></div>
+      <div class="stat"><div class="stat-num" id="stat-voluntarios">45+</div><div class="stat-label">Voluntários ativos</div></div>
+      <div class="stat"><div class="stat-num" id="stat-anos">12</div><div class="stat-label">Anos de história</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-cards-grid">
+      <div class="hcard"><div class="hcard-icon">🧩</div><div class="hcard-title">Jogos Educativos</div><div class="hcard-desc">Atividades desenvolvidas para estimular e incluir</div></div>
+      <div class="hcard"><div class="hcard-icon">🤖</div><div class="hcard-title">Chatbot de Apoio</div><div class="hcard-desc">Tire dúvidas com nossa IA especializada</div></div>
+      <div class="hcard"><div class="hcard-icon">📅</div><div class="hcard-title">Eventos Semanais</div><div class="hcard-desc">Workshops, palestras e encontros para famílias</div></div>
+      <div class="hcard"><div class="hcard-icon">💛</div><div class="hcard-title">Rede de Apoio</div><div class="hcard-desc">Comunidade acolhedora e especializada</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DESTAQUES / NOVIDADES -->
+<section id="destaques">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag tag-azul">Novidades</span>
+      <h2>Destaques & Notícias</h2>
+      <p class="section-desc">Fique por dentro de tudo que acontece na Casa Nossa Mãe — eventos, conquistas e histórias que inspiram.</p>
+    </div>
+    <div class="news-grid reveal" id="news-grid">
+      <!-- Destaques fixos + dinâmicos via JS -->
+      <div class="news-card featured">
+        <div class="news-img" style="font-size:5rem">🌻</div>
+        <div class="news-body">
+          <span class="news-cat">Destaque</span>
+          <div class="news-title">Casa Nossa Mãe celebra 31 anos de acolhimento e mais de 280 famílias impactadas</div>
+          <div class="news-date">🗓 Fevereiro 2026 · 5 min de leitura</div>
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-img" style="font-size:3rem;height:160px">🧩</div>
+        <div class="news-body">
+          <span class="news-cat">Projeto</span>
+          <div class="news-title">Novos jogos educativos são lançados para crianças com TEA</div>
+          <div class="news-date">🗓 Janeiro 2026</div>
+        </div>
+      </div>
+      <div class="news-card" onclick="scrollToSection('voluntarios')">
+        <div class="news-img" style="font-size:3rem;height:160px">🤝</div>
+        <div class="news-body">
+          <span class="news-cat" style="background:rgba(58,170,126,.12);color:var(--verde)">Voluntários</span>
+          <div class="news-title">Inscrições abertas para voluntários no 1° trimestre de 2026</div>
+          <div class="news-date">🗓 Janeiro 2026</div>
+        </div>
+      </div>
+      <div class="news-card" onclick="scrollToSection('eventos')">
+        <div class="news-img" style="font-size:3rem;height:160px">🎉</div>
+        <div class="news-body">
+          <span class="news-cat" style="background:rgba(240,124,51,.12);color:var(--laranja)">Evento</span>
+          <div class="news-title">Roda de Conversa com especialistas: TEA na escola</div>
+          <div class="news-date">🗓 15 Mar 2026 · Online</div>
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-img" style="font-size:3rem;height:160px">🏆</div>
+        <div class="news-body">
+          <span class="news-cat" style="background:rgba(245,200,66,.18);color:#b8860b">Conquista</span>
+          <div class="news-title">Casa Nossa Mãe recebe prêmio estadual de inclusão social</div>
+          <div class="news-date">🗓 Dezembro 2025</div>
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-img" style="font-size:3rem;height:160px">🔴</div>
+        <div class="news-body">
+          <span class="news-cat" style="background:rgba(135,160,251,.18)">Projeto</span>
+          <div class="news-title">Assista nosso Podcast ao vivo</div>
+          <div class="news-date">🗓 Em breve</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTOS -->
+<section id="eventos">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag tag-verde">Agenda</span>
+      <h2>Eventos & Programação</h2>
+      <p class="section-desc">Participe dos nossos encontros, workshops e atividades. Todos são bem-vindos!</p>
+    </div>
+    <div class="eventos-layout">
+      <div>
+        <div class="eventos-list reveal" id="eventos-list"></div>
+      </div>
+      <div class="reveal">
+        <div class="calendario-mini">
+          <div class="cal-header">
+            <button class="cal-nav" onclick="calNav(-1)">‹</button>
+            <span class="cal-title" id="cal-title"></span>
+            <button class="cal-nav" onclick="calNav(1)">›</button>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div style="margin-top:16px;padding-top:14px;border-top:1.5px solid var(--borda)">
+            <div style="font-size:.78rem;font-weight:700;color:var(--azul);margin-bottom:8px">Legenda</div>
+            <div style="display:flex;gap:12px;font-size:.75rem;align-items:center">
+              <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:var(--azul);display:inline-block"></span>Hoje</span>
+              <span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:var(--laranja);display:inline-block"></span>Evento</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOLUNTÁRIOS -->
+<section id="voluntarios" style="background:#fff">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag tag-laranja">Voluntariado</span>
+      <h2>Faça Parte da Nossa Família</h2>
+      <p class="section-desc">Seu tempo e talento podem transformar vidas. Conheça as oportunidades e requisitos para ser voluntário.</p>
+    </div>
+    <div class="vol-grid reveal">
+      <div class="vol-card"><div class="vol-icon">🎨</div><div class="vol-title">Arte e Cultura</div><div class="vol-desc">Atividades artísticas, musicais e culturais para estimular a criatividade e expressão.</div><button class="btn-primary" style="width:100%;padding:10px" onclick="fillVolArea('Arte e Cultura')">Quero Participar</button></div>
+      <div class="vol-card"><div class="vol-icon">📚</div><div class="vol-title">Educação & Reforço</div><div class="vol-desc">Apoio pedagógico, reforço escolar e desenvolvimento de habilidades cognitivas.</div><button class="btn-primary" style="width:100%;padding:10px" onclick="fillVolArea('Educação e Reforço')">Quero Participar</button></div>
+      <div class="vol-card"><div class="vol-icon">💊</div><div class="vol-title">Saúde & Bem-Estar</div><div class="vol-desc">Profissionais de saúde, psicologia, fonoaudiologia e terapia ocupacional.</div><button class="btn-primary" style="width:100%;padding:10px" onclick="fillVolArea('Saúde e Bem-estar')">Quero Participar</button></div>
+    </div>
+    <div class="reveal" style="margin-top:48px">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;color:var(--azul);margin-bottom:6px">📋 Requisitos para Voluntariado</h3>
+      <p style="color:var(--texto-suave);font-size:.9rem;margin-bottom:24px">Confira os documentos e regulamentações necessários para iniciar.</p>
+      <div class="docs-grid" style="max-width:680px">
+        <div class="doc-card" onclick="showToast('📄 Baixando documento...')"><div class="doc-icon">📄</div><div><div class="doc-label">Regulamento Geral</div><div class="doc-sub">Normas e conduta · PDF</div></div></div>
+        <div class="doc-card" onclick="showToast('📄 Baixando documento...')"><div class="doc-icon">✅</div><div><div class="doc-label">Termo de Compromisso</div><div class="doc-sub">Documento obrigatório · PDF</div></div></div>
+        <div class="doc-card" onclick="showToast('📄 Baixando documento...')"><div class="doc-icon">🏅</div><div><div class="doc-label">Modelo de Certificado</div><div class="doc-sub">Horas voluntárias · PDF</div></div></div>
+        <div class="doc-card" onclick="showToast('📄 Baixando documento...')"><div class="doc-icon">📋</div><div><div class="doc-label">Ficha de Inscrição</div><div class="doc-sub">Formulário oficial · DOCX</div></div></div>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:48px">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;color:var(--azul);margin-bottom:20px">📝 Inscreva-se como Voluntário</h3>
+      <div class="vol-form">
+        <div class="form-row">
+          <div class="form-field"><label class="form-label">Nome completo *</label><input class="form-input" type="text" id="vol-nome" placeholder="Seu nome"></div>
+          <div class="form-field"><label class="form-label">E-mail *</label><input class="form-input" type="email" id="vol-email" placeholder="seu@email.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label class="form-label">Telefone</label><input class="form-input" type="tel" id="vol-tel" placeholder="(00) 00000-0000"></div>
+          <div class="form-field"><label class="form-label">Área de interesse *</label>
+            <select class="form-select" id="vol-area">
+              <option value="">Selecione...</option>
+              <option>Arte e Cultura</option><option>Educação e Reforço</option>
+              <option>Saúde e Bem-estar</option><option>Administrativo</option>
+              <option>TI e Comunicação</option><option>Outros</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field"><label class="form-label">Por que deseja ser voluntário?</label><textarea class="form-textarea" id="vol-motivo" placeholder="Conte um pouco sobre você e sua motivação..."></textarea></div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="checkbox" id="vol-termo" style="width:16px;height:16px;cursor:pointer">
+          <label for="vol-termo" style="font-size:.85rem;color:var(--texto-suave);cursor:pointer">
+            Li e aceito o <span style="color:var(--azul);font-weight:600;cursor:pointer" onclick="showToast('📄 Abrindo regulamento...')">Regulamento Geral</span> e o <span style="color:var(--azul);font-weight:600;cursor:pointer" onclick="showToast('📄 Abrindo termo...')">Termo de Compromisso</span>.
+          </label>
+        </div>
+        <button class="btn-primary" style="width:fit-content;padding:14px 32px" onclick="submitVol()">Enviar Inscrição 🚀</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE NÓS -->
+<section id="sobre">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag tag-rosa">Sobre Nós</span>
+      <h2>Nossa História & Documentações</h2>
+    </div>
+    <div class="sobre-grid reveal">
+      <div>
+        <p style="font-size:1rem;line-height:1.8;color:var(--texto-suave);margin-bottom:20px">A <strong style="color:var(--azul)">Casa Nossa Mãe</strong> nasceu em 2013 do sonho de mães que queriam ver seus filhos incluídos, respeitados e amados. Hoje somos referência regional no apoio ao Transtorno do Espectro Autista (TEA), oferecendo suporte multidisciplinar, grupos de apoio e espaços de desenvolvimento.</p>
+        <p style="font-size:1rem;line-height:1.8;color:var(--texto-suave);margin-bottom:28px">Nossa missão é garantir que nenhuma família se sinta sozinha nessa jornada. Com amor, ciência e comunidade, construímos pontes para um mundo mais inclusivo.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <button class="btn-primary" onclick="showToast('📊 Carregando relatório...')">📊 Relatório Anual</button>
+          <button class="btn-secondary" onclick="showToast('🏛 Abrindo estatuto...')">🏛 Estatuto Social</button>
+        </div>
+        <div class="docs-grid" style="margin-top:28px">
+          <div class="doc-card" onclick="showToast('📄 Baixando CNPJ...')"><div class="doc-icon">🏢</div><div><div class="doc-label">CNPJ & Registros</div><div class="doc-sub">Documentação institucional</div></div></div>
+          <div class="doc-card" onclick="showToast('📄 Baixando ata...')"><div class="doc-icon">📝</div><div><div class="doc-label">Ata de Fundação</div><div class="doc-sub">Documento histórico</div></div></div>
+          <div class="doc-card" onclick="showToast('📄 Baixando balanço...')"><div class="doc-icon">💰</div><div><div class="doc-label">Balanço Financeiro</div><div class="doc-sub">Prestação de contas</div></div></div>
+          <div class="doc-card" onclick="showToast('📄 Baixando certidão...')"><div class="doc-icon">✨</div><div><div class="doc-label">Certidões & Alvarás</div><div class="doc-sub">Documentação legal</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sobre-visual"><div class="sobre-visual-decoration"></div><span style="position:relative;z-index:1">🌻</span></div>
+        <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="card" style="padding:18px;text-align:center"><div style="font-size:1.8rem;font-weight:900;font-family:'Playfair Display',serif;color:var(--azul)" id="sobre-familias">280+</div><div style="font-size:.8rem;color:var(--texto-suave)">Famílias atendidas</div></div>
+          <div class="card" style="padding:18px;text-align:center"><div style="font-size:1.8rem;font-weight:900;font-family:'Playfair Display',serif;color:var(--verde)" id="sobre-voluntarios">45+</div><div style="font-size:.8rem;color:var(--texto-suave)">Voluntários ativos</div></div>
+          <div class="card" style="padding:18px;text-align:center"><div style="font-size:1.8rem;font-weight:900;font-family:'Playfair Display',serif;color:var(--laranja)" id="sobre-anos">12</div><div style="font-size:.8rem;color:var(--texto-suave)">Anos de história</div></div>
+          <div class="card" style="padding:18px;text-align:center"><div style="font-size:1.8rem;font-weight:900;font-family:'Playfair Display',serif;color:var(--rosa)" id="sobre-projetos">8</div><div style="font-size:.8rem;color:var(--texto-suave)">Projetos ativos</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato" style="background:linear-gradient(135deg,var(--azul),var(--azul-claro));color:#fff">
+  <div class="section-inner" style="text-align:center">
+    <div class="reveal">
+      <div style="font-size:3rem;margin-bottom:16px">💛</div>
+      <h2 style="color:#fff;margin-bottom:12px">Entre em Contato</h2>
+      <p style="color:rgba(255,255,255,.8);max-width:500px;margin:0 auto 36px;line-height:1.7">Estamos aqui para apoiar você e sua família. Não hesite em nos procurar.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-secondary" style="border-color:#fff;color:#fff;background:rgba(255,255,255,.1)" onclick="showToast('📱 Abrindo WhatsApp...')">📱 WhatsApp</button>
+        <button class="btn-secondary" style="border-color:#fff;color:#fff;background:rgba(255,255,255,.1)" onclick="showToast('📧 Abrindo e-mail...')">📧 contato@casanossomae.org.br</button>
+        <button class="btn-secondary" style="border-color:#fff;color:#fff;background:rgba(255,255,255,.1)" onclick="showToast('📍 Abrindo mapa...')">📍 Ver Localização</button>
+      </div>
+      <p style="color:rgba(255,255,255,.6);font-size:.85rem;margin-top:24px">Seg–Sex: 8h às 18h · Sáb: 8h às 12h</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:18px">🌻</div>
+          <div class="footer-brand-text">Casa Nossa Mãe</div>
+        </div>
+        <p class="footer-about">Centro de Apoio ao Autismo dedicado a transformar vidas com amor, ciência e comunidade desde 2013.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Navegação</div>
+        <ul class="footer-links">
+          <li><a href="#hero">Início</a></li><li><a href="#destaques">Novidades</a></li>
+          <li><a href="#eventos">Eventos</a></li><li><a href="#voluntarios">Voluntários</a></li>
+          <li><a href="#sobre">Sobre Nós</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Documentos</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="showToast('📄 Baixando...')">Estatuto Social</a></li>
+          <li><a href="#" onclick="showToast('📄 Baixando...')">CNPJ & Registros</a></li>
+          <li><a href="#" onclick="showToast('📄 Baixando...')">Regulamento Voluntário</a></li>
+          <li><a href="#" onclick="showToast('📄 Baixando...')">Política de Privacidade</a></li>
+          <li><a href="#" onclick="showToast('📄 Baixando...')">Relatório Anual 2025</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contato</div>
+        <div class="footer-contact">📍 Rua das Flores, 123<br>Seu Bairro – Cidade/SP<br>📱 (00) 99999-9999<br>📧 contato@casanossomae.org.br<br>⏰ Seg–Sex: 8h–18h</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Casa Nossa Mãe – Centro de Apoio ao Autismo. Todos os direitos reservados.</span>
+      <span>Feito com 💛 pelo Projeto Integrador</span>
+    </div>
+  </div>
+</footer>
+
+<!-- CHATBOT -->
+<div id="chatbot-fab" onclick="toggleChat()">🤖</div>
+<div class="chatbot-tooltip" id="chat-tooltip">Precisa de ajuda? Fale comigo!</div>
+<div id="chatbot-window">
+  <div class="chat-header">
+    <div class="chat-avatar">🌻</div>
+    <div class="chat-header-info"><div class="chat-name">Assistente Casa Nossa Mãe</div><div class="chat-status">Online agora</div></div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-quick-btns">
+    <button class="quick-btn" onclick="sendQuick('O que é autismo?')">🧩 O que é autismo?</button>
+    <button class="quick-btn" onclick="sendQuick('Como me inscrever como voluntário?')">🤝 Ser voluntário</button>
+    <button class="quick-btn" onclick="sendQuick('Próximos eventos')">📅 Eventos</button>
+    <button class="quick-btn" onclick="sendQuick('Documentos e certificados')">📄 Documentos</button>
+    <button class="quick-btn" onclick="sendQuick('Contato da instituição')">📞 Contato</button>
+  </div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chat-input" placeholder="Digite sua mensagem..." onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="chat-send" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<!-- NOTIFICAÇÕES -->
+<div id="notif-dropdown">
+  <div class="notif-header">🔔 Notificações<span class="notif-mark" onclick="markAllRead()">Marcar como lido</span></div>
+  <div id="notif-list"></div>
+</div>
+
+<!-- MODAL VOLUNTÁRIO -->
+<div class="modal-overlay" id="modal-vol">
+  <div class="modal-box">
+    <div class="modal-header"><div class="modal-title">Inscrição Enviada!</div><button class="modal-close" onclick="closeModal('modal-vol')">✕</button></div>
+    <div class="success-msg">
+      <div class="success-text">Inscrição realizada com sucesso!</div>
+      <div class="success-sub">Em breve nossa equipe entrará em contato pelo e-mail informado. Obrigado por querer fazer parte da Casa Nossa Mãe! 💛</div>
+      <button class="btn-primary" style="margin-top:20px;width:100%" onclick="closeModal('modal-vol')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="script.js"></script>
+</body>
+</html>
 
