@@ -1,0 +1,112 @@
+-- ═══════════════════════════════════════════
+-- BANCO DE DADOS – Casa Nossa Mãe
+-- Centro de Apoio ao Autismo
+-- ═══════════════════════════════════════════
+
+CREATE DATABASE IF NOT EXISTS casa_nossa_mae
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE casa_nossa_mae;
+
+-- ─── 1. ADMINISTRADORES ─────────────────────
+CREATE TABLE administradores (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  nome       VARCHAR(100)  NOT NULL,
+  email      VARCHAR(150)  NOT NULL UNIQUE,
+  senha_hash VARCHAR(255)  NOT NULL,
+  criado_em  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ─── 2. EVENTOS ─────────────────────────────
+CREATE TABLE eventos (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  titulo    VARCHAR(200)  NOT NULL,
+  local     VARCHAR(200)  NOT NULL,
+  data      DATE          NOT NULL,
+  hora      TIME          NOT NULL,
+  tipo      ENUM('normal','urgente') DEFAULT 'normal',
+  descricao TEXT,
+  criado_em TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ─── 3. NOTIFICAÇÕES ────────────────────────
+CREATE TABLE notificacoes (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  titulo    VARCHAR(150)  NOT NULL,
+  mensagem  TEXT          NOT NULL,
+  tipo      ENUM('info','evento','urgente','conquista') DEFAULT 'info',
+  lida      BOOLEAN       DEFAULT FALSE,
+  criado_em TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ─── 4. ESTATÍSTICAS ────────────────────────
+CREATE TABLE estatisticas (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  familias      VARCHAR(20)  DEFAULT '280+',
+  voluntarios   VARCHAR(20)  DEFAULT '45+',
+  anos          VARCHAR(20)  DEFAULT '12',
+  projetos      VARCHAR(20)  DEFAULT '8',
+  atualizado_em TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+                             ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ─── 5. DESTAQUES ───────────────────────────
+CREATE TABLE destaques (
+  id              INT AUTO_INCREMENT PRIMARY KEY,
+  emoji           VARCHAR(10)  DEFAULT '🌻',
+  titulo          VARCHAR(200) NOT NULL,
+  categoria       VARCHAR(50)  DEFAULT 'Destaque',
+  data_publicacao VARCHAR(50),
+  criado_em       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ─── 6. VOLUNTÁRIOS ─────────────────────────
+CREATE TABLE voluntarios (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  nome      VARCHAR(100) NOT NULL,
+  email     VARCHAR(150) NOT NULL,
+  telefone  VARCHAR(20),
+  area      VARCHAR(100) NOT NULL,
+  motivacao TEXT,
+  status    ENUM('pendente','aprovado','recusado') DEFAULT 'pendente',
+  criado_em TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ─── 7. ATIVIDADE DO ADMIN ──────────────────
+CREATE TABLE atividade_admin (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  texto     VARCHAR(255) NOT NULL,
+  cor       VARCHAR(50)  DEFAULT '#1a4b8c',
+  criado_em TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ─── 8. CONFIGURAÇÕES ───────────────────────
+CREATE TABLE configuracoes (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  chatbot       BOOLEAN   DEFAULT TRUE,
+  push          BOOLEAN   DEFAULT TRUE,
+  voluntarios   BOOLEAN   DEFAULT TRUE,
+  atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                          ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ═══════════════════════════════════════════
+-- DADOS OBRIGATÓRIOS
+-- ═══════════════════════════════════════════
+
+-- Admin padrão (senha: admin@2026)
+INSERT INTO administradores (nome, email, senha_hash)
+VALUES (
+  'Administrador',
+  'admin@casanossomae.org.br',
+  '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+);
+
+-- Estatísticas iniciais
+INSERT INTO estatisticas (familias, voluntarios, anos, projetos)
+VALUES ('280+', '45+', '12', '8');
+
+-- Configurações iniciais
+INSERT INTO configuracoes (chatbot, push, voluntarios)
+VALUES (TRUE, TRUE, TRUE);
